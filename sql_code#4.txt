@@ -1,0 +1,54 @@
+--select sum (sal), min(sal), max(sal),count(sal),avg(sal), from scott.emp; 
+
+--select sum (sal), min(sal), max(sal),count(sal),avg(sal),count(comm),count(empno) from scott.emp;   
+select sum (sal), min(sal), max(sal),deptno
+from scott.emp
+group by deptno;
+
+select max(sal) 
+from scott.emp
+where sal <> (select max(sal) from scott.emp);
+
+
+create view myempview 
+as select 
+empno, sal,deptno,ename
+from scott.emp;
+
+select sal from scott.emp
+where sal > (select sal 
+from scott.emp
+where ename = 'SCOTT');
+
+select sal from scott.emp
+where sal > any (select sal 
+from scott.emp
+where deptno = 10);
+
+
+create table empolyee_copy as select * from scott.emp;
+
+
+select * from empolyee_copy;
+
+
+select deptno,sal 
+from scott.emp
+union all 
+select deptno, sal 
+from empolyee_copy;
+
+
+--sequance for auto increament
+create sequence empno
+increment by 1
+start with 7934
+maxvalue 8000
+nocycle;  
+
+
+select deptno_sequence.currval             
+from dual;
+
+create index sal_index 
+on scott.emp(sal); 
