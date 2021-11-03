@@ -1,0 +1,94 @@
+declare 
+r_student scott.emp%rowtype;
+begin
+get the info.of student 100
+select * into r_scott.emp
+from scott.emp 
+where scott.emp_empno =3;
+show student info.
+dbms_output.put_line(r_scott.emp.ename || ',gpa:' || r_scott.emp.gpa);
+end;
+
+select * 
+from scott.emp;
+--*******************************************************************************************************************************************
+select * from student;
+
+create table student (  
+id number(10)primary key, 
+f_name varchar2(6), 
+l_name varchar2(7), 
+email varchar2(5), 
+join_date date  default sysdate, 
+major varchar2(6), 
+national_no number(7),
+gpa number(5));
+--********************************************************************************
+--**********************************how to create function*********************************************************************
+create or replace function get_studentgpa
+(p_studentid  number)
+return number
+is
+v_result student.gpa%type;
+begin 
+select gpa into v_result 
+from student 
+where id =p_studentid;
+return v_result;
+end;
+ا
+--***************************************************
+begin 
+select * into v_result 
+from student 
+where id =p_studentid;
+return v_result;
+end;
+
+--how to call this function:
+declare 
+l_result  student%rowtype ; --initial value , we do this step to ignore the null value --in this case we dont have to enter an initial value coz the row type must has multiple value
+begin
+ l_result := get_studentinfo(7000);
+dbms_output.put_line('studentinfo ' || l_result.f_name);--if we want to print all info. we have to make concat لانو اذا بخليه يطبعلي الفاريبل حيطلعلي كل القيم وانا ما بقدر اعرف كل قيمه لشو
+end;
+
+--************************************************************************************************
+create  or replace function get_studentgpa_updated(p_studentid  number, p_studentgpa number)
+return number
+is
+begin 
+update  student 
+set gpa=gpa+p_studentgpa
+where id =p_studentid ;
+return 0;
+end;
+
+--how to call this function:
+declare 
+num1 number;
+begin 
+num1:= get_studentgpa_updated(7000,3);
+dbms_output.put_line('sssss');
+end;
+--***************************************************************************************************************************************************************
+create  or replace function calculator(p_num1  number, p_num2 number , p_operation varchar2)
+return number
+is
+v_result number;-- مشان اعرف انو هاد الفنكشين رح يرجعلي رقم
+begin 
+if p_operation ='+' then 
+return p_num1+p_num2;
+elsif p_operation='-' then 
+return p_num1-p_num2;
+else return 0;
+end if;
+end;
+
+--how to call this fun.:
+declare 
+v_result number;
+begin 
+v_result := calculator(2,3,'+');
+dbms_output.put_line(v_result);
+end;
