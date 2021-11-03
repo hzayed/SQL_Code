@@ -1,0 +1,125 @@
+
+--***************create procedure to calculate sqr***************************************
+create or replace procedure sqr(p_num in  number)
+is
+v_result number;
+begin 
+v_result:=p_num *p_num;
+end;
+--how to call this procedure:
+exec sqr(5);
+--************************create function to get student's info by his id *************************
+create or replace function getstudentinfo (p_studentid number)
+return student%rowtype
+is
+v_information student%rowtype;
+begin 
+select * into v_information
+from student 
+where id =p_studentid;
+return v_information;
+end;
+--*************how to call this fun.:
+declare 
+v_studentinfo student%rowtype;
+begin 
+v_studentinfo :=getstudentinfo(1);
+dbms_output.put_line(v_studentinfo.f_name ||v_studentinfo.l_name);-- we put the concate coz the dbms statement cant take a hole recorde so we put the dot on each value 
+end;
+--************************************************************************************************
+--**************************create procedure to enter empno and get his sal*******************************************************************************
+create  or replace procedure getempsal (p_empno in number)
+is
+v_salresult number;
+begin 
+select sal 
+into v_salresult 
+from scott.emp 
+where empno = p_empno;
+dbms_output.put_line(v_salresult);
+exception 
+when others then
+dbms_output.put_line(sqlerrm);
+end;
+:= use for assigment (للتعيين) , = use for condition
+
+how to excute this procedure:
+execute getempsal(7839);
+************************************************************************************************************************************************
+
+--*************create trigger to chick the delete on student table***************************
+
+create table student_archiv as  select * from student; --to make like table student
+create or replace trigger archivedata
+before delete 
+-- we can do before or or update delete 
+on student  -- name of coloum or table we want to chick on 
+for each row 
+begin
+insert into student_archive
+values 
+(:old.id,:old.f_name,:old.l_name,:old.email,sysdate,:old.major,:old.national_no,:old.gpa);
+end;
+
+delete from student where id =1;
+select * from student_archive;
+select * from student;
+
+--***********************************************************************************************************
+--************************************create tigger to chick the gpa of student if its greater than 4 or not********************
+create or replace trigger archivegpa
+after  update or insert of gpa   (لازم احط انسيرت اور ابديت حتى لو ما طلب مني لسؤال)
+on student 
+for each row 
+begin
+if :new.gpa < 4 then 
+insert into student_archive
+values 
+(:new.id,:new.f_name,:new.l_name,:new.email,sysdate,:new.major,:new.national_no,:new.gpa);
+else 
+raise_application_error(-20101,'the value of gpa cant be greater than 4');
+end if ;
+end;
+
+select * from student_archive;
+select * from student;
+insert into student 
+values
+(1,'aya','aya','aya@','20-oct-2021','med',3455,3.1);
+--**************************************************************************************************--******************************create package header contain the src code of all functions and procedure we make them****************************
+create or replace package packageof_functions 
+as 
+function get_student_info (p_studentid  number)
+return scott.emp%rowtype;
+
+procedure sqr(x in out number );
+end;
+-- create the body of this package :
+create or replace package body packageof_functions
+as
+ function get_student_info
+(p_studentid  number)
+return scott.emp%rowtype
+is
+v_result scott.emp%rowtype;
+begin 
+select * into v_result 
+from scott.emp 
+where empno =p_studentid;
+return v_result;
+end get_student_info;
+
+ procedure sqr(x in out number )
+is 
+begin 
+x := x*x;
+dbms_output.put_line(x);
+end sqr;
+end packageof_functions;
+--***************************************************************************************************************
+--************************how to get a random number***********************************************
+select dbms_random.value from dual;
+--***************get a random number between range********************
+select dbms_random.value(1,1000) num from dual;
+--****************************************************************************
+####end of the pl/sql
