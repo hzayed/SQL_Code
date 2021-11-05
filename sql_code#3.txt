@@ -1,75 +1,20 @@
+--*** calculate the number of the student's name and print the name of students**********
 select count(ename),ename 
 from scott.emp group by ename;
-
+--*************
+--**** disply all the data stored in scott.emp table
 select * 
 from scott.emp;
-
-select count(ename),ename
-from scott.emp group by ename;
-
+--**********
+--*****show the name and its job for each empolyee in scoot.emp table
 select count (concat(concat(ename,'')),job), concat(concat(ename,'')),job from scott.emp group by concat(concat(ename,'')),job;
 
-select * from scott.emp;
-
-select count(ename),ename
- from scott.emp group by ename;
-
-select count (concat(ename,job)), concat(ename,job) 
-from scott.emp 
-group by concat(ename,job);
-
-select * from scott.emp;
-
-select count(ename),ename 
- from scott.emp group by ename;
-
-select count (concat(concat(ename,''),job), concat(concat(ename,''),job from scott.emp group by concat(concat(ename,''),job;
-
-select * from scott.emp;
-
-select count(ename),ename
- from scott.emp group by ename;
-
-select count (concat(concat(ename,''),job), concat(concat(ename,''),job) from scott.emp group by concat(concat(ename,''),job);
-
-select * from scott.emp;
-
-select count(ename),ename 
- from scott.emp group by ename;
-
-select count (concat(ename,job), concat(ename,job) from scott.emp group by concat(ename ,job);
-
-select * from scott.emp;
-
-select count(ename),ename 
- from scott.emp group by ename;
-
 select count (concat(ename,job)), concat(ename,job) from scott.emp group by concat(ename ,job);
-
-select * from scott.emp;
-
-select count(ename),ename 
- from scott.emp group by ename;
-
-select count (concat(ename,job)), concat(ename,job) from scott.emp group by concat(ename ,job);
-
-select * from scott.emp;
-
-select * from scott.emp;
-
-select count(ename),ename 
-from scott.emp group by ename;
 
 select count (ename||''|| job), ename ,job 
 from scott.emp 
 group by ename ,job;
-
-select * 
-from scott.emp;
-
-
---////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+--*******************
 create table studends(
 ID number(7)  primary key,
 F_name varchar2(20) ,
@@ -79,20 +24,23 @@ Join_date date default sysdate,
 Major varchar2(10),
  National_number number(10)
  );
--- ------------------------------
+-- *******to add "gpa"column into student table*****
 alter table students 
  add GPA number(3,2);
--- -----------------------------------
-
+-- *****************************
+--***************insert data into student table*****
  insert into students (ID, F_name ,L_name, Email, Join_date ,Major ,National_number) 
 values (111 , 'doha','isam', 'doha.alshaikh99@gmail.com','12-oct-2021' ,'cis',0172589633);
--- ----------------------------------
+-- *******************************
+--**********to modify the value of the gpa of the student his id =111***********
 UPDATE students 
 SET GPA = 3.14
 WHERE ID =111;
 -- ----------------------------
+--***********show all the data stored in student table******
 select * from students;
 -- -----------------------------
+--********** print data options:**************
 select upper(F_name),lower(L_name) from students;
 -- -----------------------
 select concat(F_name,L_name) fullName from students;
