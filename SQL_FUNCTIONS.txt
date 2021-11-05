@@ -3,7 +3,6 @@ DECLARE
  V_NUM1 NUMBER(1) :=0;
  V_NUM2 NUMBER(1) :=1;
 
- 
 BEGIN 
 DBMS_OUTPUT.PUT_LINE(V_VAR1);
 DBMS_OUTPUT.PUT_LINE(V_NUM2/V_NUM1);
@@ -12,12 +11,11 @@ EXCEPTION
 WHEN ZERO_DIVIDE THEN 
 DBMS_OUTPUT.PUT_LINE('DIVIDE BY ZERO');
 
-
-
-
 end;
+--*********************the end of the block*****************
+--****** this block to print this sequance (2,4,6,8,10)
 
-declare -- to print this sequance 2 4 6 8 10
+declare 
 step number (10) :=2;--10 mean the last no. , 2 mean the value of increament
 begin
 for counter in 1..5
@@ -25,21 +23,16 @@ loop
 dbms_output.put_line(counter*step);
 end loop;
 end;
+--****************************************************
+SELECT * FROM STUDENT;
+--***********************************************
+-- *********CREATE A FUNCION*****************
+ V_VAR1 VARCHAR2(20):='HELLO'; --initialize these variables  
+ V_NUM1 NUMBER(1) :=0;
+  V_NUM2 NUMBER(1) :=1;
 
-
-
-
-
-
--- SELECT * FROM STUDENT;
-
---  V_VAR1 VARCHAR2(20):='HELLO';
---  V_NUM1 NUMBER(1) :=0;
---  V_NUM2 NUMBER(1) :=1;
-
--- CREATE A FUNCION
 DECLARE 
- V_SCORE STUDENT.TOTAL_SCORE%TYPE;
+ V_SCORE STUDENT.TOTAL_SCORE%TYPE;-- initialize these two variable and set thier type
  V_NAME STUDENT.NAMEI%TYPE;
 BEGIN 
 -- DBMS_OUTPUT.PUT_LINE(V_VAR1);
@@ -58,11 +51,8 @@ DBMS_OUTPUT.PUT_LINE('USER ID DOES NOT EXIST');
 WHEN TOO_MANY_ROWS THEN
 DBMS_OUTPUT.PUT_LINE('THE DATABASE RETURNS MORE THAN ONE ROW');
 end;
-
-
-
---IF STATEMENT
-
+--**************************************************************
+--******** create if statement***************
 DECLARE 
  V_SCORE STUDENT.TOTAL_SCORE%TYPE:=700;
  V_NAME STUDENT.NAMEI%TYPE;
@@ -71,8 +61,8 @@ IF V_SCORE >500 THEN
 DBMS_OUTPUT.PUT_LINE('GREATER THAN 500');
 END IF;
 END;
-
---ELSE IF
+--*************************************
+--*****create else if **************************
 DECLARE 
  V_SCORE STUDENT.TOTAL_SCORE%TYPE:=700;
  V_NAME STUDENT.NAMEI%TYPE;
@@ -86,10 +76,8 @@ ELSE
 DBMS_OUTPUT.PUT_LINE('SMALLER THAN 500');
 END IF;
 END;
-
-
---ELSIF 
-
+--************************************************** 
+--**********check if the value of "v_score" is greater or smaller or equal 500*****
 DECLARE 
  V_SCORE STUDENT.TOTAL_SCORE%TYPE:=700;
  V_NAME STUDENT.NAMEI%TYPE;
@@ -107,9 +95,8 @@ DBMS_OUTPUT.PUT_LINE('SMALLER THAN 500');
 
 END IF;
 END;
-
-
-
+--****************************************************
+--********************************
 DECLARE 
  V_SCORE STUDENT.TOTAL_SCORE%TYPE:=700;
  V_NAME STUDENT.NAMEI%TYPE;
@@ -134,17 +121,8 @@ DBMS_OUTPUT.PUT_LINE('USER ID DOES NOT EXIST');
 WHEN TOO_MANY_ROWS THEN
 DBMS_OUTPUT.PUT_LINE('THE DATABASE RETURNS MORE THAN ONE ROW');
 END;
-
-
-
-
-
-
-
-
-
-
---case statement
+--*******************************************************
+--*****************create case statement****************
 
 DECLARE 
  V_SCORE STUDENT.TOTAL_SCORE%TYPE:=700;
@@ -171,8 +149,8 @@ DBMS_OUTPUT.PUT_LINE('USER ID DOES NOT EXIST');
 WHEN TOO_MANY_ROWS THEN
 DBMS_OUTPUT.PUT_LINE('THE DATABASE RETURNS MORE THAN ONE ROW');
 END;
-
---LOOPS 
+--*******************************************************
+--****print this sequance (3 4 5 6 7 8 9 10 11)****************** 
 
 DECLARE 
 STEP NUMBER(10) :=2;
@@ -181,8 +159,8 @@ FOR COUNTER IN 1..9 LOOP
 DBMS_OUTPUT.PUT_LINE(COUNTER+STEP);
 END LOOP;
 END;
-
---CURSOR 
+--*****************************************************
+--***** crete a CURSOR to read data from table****************** 
 
 DECLARE 
 STEP NUMBER(10)  :=2;
@@ -195,7 +173,8 @@ FOR COUNTER IN MYSTUDENTS LOOP
  DBMS_OUTPUT.PUT_LINE(COUNTER.ENAME);
 END LOOP;
 END;
-
+--***************************************************
+-- ***********create a cursor to update the data of the table************
 -- STUDENT (ADD MARKS)
 DECLARE 
 CURSOR MYSTUDENTS IS 
@@ -209,27 +188,23 @@ WHERE IDI=COUNTER.IDI ;
  DBMS_OUTPUT.PUT_LINE('UPDATED');
 END LOOP;
 END;
-
-
-
+--**********************************************************
 SELECT * FROM STUDENT
-
-
-
--- DECLARE 
--- CURSOR MYSTUDENTS IS 
--- SELECT IDI,NAMEI ,TOTAL_SCORE
--- FROM STUDENT ;
--- BEGIN 
--- FOR COUNTER IN MYSTUDENTS LOOP 
--- UPDATE STUDENT
--- SET TOTAL_SCORE=TOTAL_SCORE+100, NAMEI=CONCAT(NAMEI,' UPDATED')
--- WHERE IDI=COUNTER.IDI ;
---  DBMS_OUTPUT.PUT_LINE('UPDATED');
--- END LOOP;
--- END;
-
---LOOP WITH WHILE LOOP
+--***create caursor in order to update the data of the student table*******************
+DECLARE 
+CURSOR MYSTUDENTS IS 
+SELECT IDI,NAMEI ,TOTAL_SCORE
+FROM STUDENT ;
+BEGIN 
+FOR COUNTER IN MYSTUDENTS LOOP 
+UPDATE STUDENT
+SET TOTAL_SCORE=TOTAL_SCORE+100, NAMEI=CONCAT(NAMEI,' UPDATED')
+WHERE IDI=COUNTER.IDI ;
+ DBMS_OUTPUT.PUT_LINE('UPDATED');
+END LOOP;
+ END;
+--*****************************************************
+--******create while loop to update the data of student table**************
 DECLARE 
 STEP NUMBER(10)  :=12;
 CURSOR MYSTUDENTS IS 
@@ -247,13 +222,9 @@ LOOP
  DBMS_OUTPUT.PUT_LINE('WHILE');
  STEP:=STEP-1;
  END LOOP;
-
-
 END;
-
-
-
-
+--************************************************************
+--************print the value of counter****************
 DECLARE 
 COUNTER NUMBER :=1;
 BEGIN 
