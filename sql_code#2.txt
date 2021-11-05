@@ -1,3 +1,4 @@
+--*******read the name and the gpa for each student************
 declare 
 r_student scott.emp%rowtype;
 begin
@@ -8,10 +9,10 @@ where scott.emp_empno =3;
 show student info.
 dbms_output.put_line(r_scott.emp.ename || ',gpa:' || r_scott.emp.gpa);
 end;
-
+--******************************************
 select * 
 from scott.emp;
---*******************************************************************************************************************************************
+--*******************************************
 select * from student;
 
 create table student (  
@@ -24,7 +25,7 @@ major varchar2(6),
 national_no number(7),
 gpa number(5));
 --********************************************************************************
---**********************************how to create function*********************************************************************
+--*************************** create function to obtain the gpa of the student***********************
 create or replace function get_studentgpa
 (p_studentid  number)
 return number
@@ -36,24 +37,25 @@ from student
 where id =p_studentid;
 return v_result;
 end;
-ا
 --***************************************************
+--******* block to get the id of each student***********
 begin 
 select * into v_result 
 from student 
 where id =p_studentid;
 return v_result;
 end;
-
---how to call this function:
+--**************************************
+-- call get_studentgpa function:
 declare 
 l_result  student%rowtype ; --initial value , we do this step to ignore the null value --in this case we dont have to enter an initial value coz the row type must has multiple value
 begin
  l_result := get_studentinfo(7000);
-dbms_output.put_line('studentinfo ' || l_result.f_name);--if we want to print all info. we have to make concat لانو اذا بخليه يطبعلي الفاريبل حيطلعلي كل القيم وانا ما بقدر اعرف كل قيمه لشو
+dbms_output.put_line('studentinfo ' || l_result.f_name);--if we want to print all info. we have to make concat  
 end;
 
 --************************************************************************************************
+--**********create a function to update the gpa for each student***************
 create  or replace function get_studentgpa_updated(p_studentid  number, p_studentgpa number)
 return number
 is
@@ -72,6 +74,7 @@ num1:= get_studentgpa_updated(7000,3);
 dbms_output.put_line('sssss');
 end;
 --***************************************************************************************************************************************************************
+--***************create a function to make a calculator*********************
 create  or replace function calculator(p_num1  number, p_num2 number , p_operation varchar2)
 return number
 is
