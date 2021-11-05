@@ -86,7 +86,7 @@ select * from student;
 insert into student 
 values
 (1,'aya','aya','aya@','20-oct-2021','med',3455,3.1);
---**************************************************************************************************--******************************create package header contain the src code of all functions and procedure we make them****************************
+--*************create package header contain the src code of all functions and procedure we make them****************************
 create or replace package packageof_functions 
 as 
 function get_student_info (p_studentid  number)
