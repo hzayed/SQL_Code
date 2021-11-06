@@ -1,26 +1,27 @@
+--**insert data into teachers table*********
+INSERT INTO TEACHERS VALUES(3,'OMAR');
 
-
-
-
-INSERT INTO TEACHERS VALUES(3,'OMAR')
+--*****view data from two tables according to specific condition*************
 SELECT*
 FROM STUDENTS,TEACHERS 
 WHERE STUDENTS.TEACHER_ID=TEACHERS.TEACHER_ID;
 
+--***view data from students table*************
 SELECT*
 FROM STUDENTS
 
-
+--**** add aforiegn key to students table*******
 - ALTER TABLE STUDENTS REFERENCES TEACHERS(TEACHER_ID)
 
-
+--** creat a function in order to insert data into students table******
 CREATE OR REPLACE FUNCTION INSERTION_DATA(ID1 NUMBER,NAME1 VARCHAR2,GPA NUMBER,ID2 NUMBER)
   RETURN NUMBER
   IS
   BEGIN 
   INSERT INTO STUDENTS VALUES (ID1,NAME1,GPA,ID2);
   RETURN 1;
---   END;   
+  END; 
+  -- call INSERTION_DATA function:
 DECLARE 
 NUM1 NUMBER(1) ;
 BEGIN 
@@ -28,28 +29,34 @@ NUM1 := INSERTION_DATA(106,'SARA',88,1);
   dbms_output.put_line(NUM1); 
 END; 
 
+--**** add a foreign for students table**************
 ALTER TABLE STUDENTS ADD CONSTRAINT FK FOREIGN KEY(TEACHER_ID)
 REFERENCES TEACHERS(TEACHER_ID);
+
+--*** create a sequance******************
 CREATE SEQUENCE MY_SEQ1
  INCREMENT BY 1
  START WITH 0
  MINVALUE 0
  MAXVALUE 9999
  CYCLE;
+ 
+ --***create student table****************
 CREATE TABLE STUDENT (
 STUDENT_ID NUMBER(5) PRIMARY KEY ,
 STUDENT_NAME VARCHAR2(22) NOT NULL,
 GPA NUMBER(3,1),
 TEACHER_ID NUMBER(5))
 
-
+--*****create a teacher table *********************
 CREATE TABLE TEACHER(
 TEACHER_ID NUMBER(5) PRIMARY KEY,
-TEACHER_NAME VARCHAR2(22))
+TEACHER_NAME VARCHAR2(22));
+
+--add a foreign key coloumn to the student table************
 ALTER TABLE STUDENT ADD CONSTRAINT FK_S FOREIGN KEY(TEACHER_ID) REFERENCES TEACHER(TEACHER_ID);
 
-
-
+--*****create function to insert data into teacher table
  CREATE OR REPLACE FUNCTION INSERTION_DATA_TEACH
   RETURN NUMBER
   IS
@@ -60,17 +67,7 @@ ALTER TABLE STUDENT ADD CONSTRAINT FK_S FOREIGN KEY(TEACHER_ID) REFERENCES TEACH
   RETURN 4;
   END; 
 
-
-
-
-
-
-
-
-
-
-
-
+--*******create function to insert data into student table*********
  CREATE OR REPLACE FUNCTION INSERTION_DATA(NUM1 NUMBER)
   RETURN NUMBER
   IS
@@ -79,24 +76,26 @@ ALTER TABLE STUDENT ADD CONSTRAINT FK_S FOREIGN KEY(TEACHER_ID) REFERENCES TEACH
     ID2 NUMBER :=2;
     GPA NUMBER:=77;
   BEGIN
- 
   INSERT INTO STUDENTS VALUES (MY_SEQ1.NEXTVAL,'AAA',80.9,2);
- 
   RETURN 4;
   END; 
-
-SELECT * FROM STUDENTS
-
+--*****view the data stored in students table******
+SELECT * FROM STUDENTS;
+-- call the insertion_data function: 
 DECLARE 
 N1 NUMBER(1);
 BEGIN 
 N1:= INSERTION_DATA_TEACH();
 END; 
+
+--*****insert data into student table********************
   INSERT INTO STUDENT(STUDENT_ID,STUDENT_NAME,GPA,TEACHER_ID) VALUES (77,'AAA',80.9,2);
 
+--*** view data from student and teacher tables *****
 SELECT * FROM TEACHER
  SELECT * FROM STUDENT
 
+--*******create trigger for student to make a validation for insert operation***********
 CREATE OR REPLACE TRIGGER SCORE1
 AFTER
 INSERT ON STUDENT  
@@ -106,23 +105,25 @@ IF  :NEW.GPA<100  THEN
 NULL ;
 ELSE 
 RAISE_APPLICATION_ERROR(-20101,'INSERTION ERROR' );
-
 END IF;
 END;
+--***********************************
+--********create a copy of teacher table ********************
 CREATE TABLE ARCH2_TEACH AS SELECT *FROM TEACHER
+--****************
+
+--*******create trigger for teacher table  to make a validation for delete operation***********
 CREATE OR REPLACE TRIGGER STU_ARCH
 AFTER
 DELETE ON TEACHER 
 FOR EACH ROW 
-
 BEGIN 
 INSERT INTO ARCH2_TEACH
 VALUES(:OLD.TEACHER_ID,:OLD.TEACHER_NAME);
 END;
+--**********************************************
 
-
-CREATE TABLE ARCH1 AS SELECT* FROM STUDENT
-
+--***** update the data of teacher table *******************
 DELETE FROM TEACHER
 WHERE TEACHER_ID=117;
 SELECT * FROM ARCH2_TEACH
