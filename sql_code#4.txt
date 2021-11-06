@@ -1,54 +1,57 @@
---select sum (sal), min(sal), max(sal),count(sal),avg(sal), from scott.emp; 
+--**calculate the max,min,count ,and the average values for the salary for each empolyee in scott.emp table***
+select sum (sal), min(sal), max(sal),count(sal),avg(sal), from scott.emp; 
 
---select sum (sal), min(sal), max(sal),count(sal),avg(sal),count(comm),count(empno) from scott.emp;   
+ --*******calculate the sum and min for each empolyee and seperated them according to number of department******
 select sum (sal), min(sal), max(sal),deptno
 from scott.emp
 group by deptno;
 
+--************calculate the second highest salary ***********
 select max(sal) 
 from scott.emp
 where sal <> (select max(sal) from scott.emp);
 
-
+--********* create snapshot of scott.emp table*********
 create view myempview 
 as select 
 empno, sal,deptno,ename
 from scott.emp;
 
+--************* calculate the max salary for "scott" empolyee
 select sal from scott.emp
 where sal > (select sal 
 from scott.emp
 where ename = 'SCOTT');
 
+--******** calculate any max salary in department 10****************
 select sal from scott.emp
 where sal > any (select sal 
 from scott.emp
 where deptno = 10);
 
-
+--****** create a copy of scott.emp table******
 create table empolyee_copy as select * from scott.emp;
-
 
 select * from empolyee_copy;
 
-
+--*********make join of type "union all" for scott.emp table and empolyee_copy table******
 select deptno,sal 
 from scott.emp
 union all 
 select deptno, sal 
 from empolyee_copy;
 
-
---sequance for auto increament
+--****create a sequance for auto increament***********
 create sequence empno
 increment by 1
 start with 7934
 maxvalue 8000
-nocycle;  
+nocycle; 
 
-
+--******* view the current value of sequance"deptno_sequance"********
 select deptno_sequence.currval             
 from dual;
 
+--***** create index os scott.emp table according to salary"sal"
 create index sal_index 
 on scott.emp(sal); 
